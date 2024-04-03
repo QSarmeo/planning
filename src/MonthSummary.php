@@ -46,13 +46,11 @@ class MonthSummary
                 throw new \InvalidArgumentException('Input date does not respect expected d/m format');
             }
             $dateDay = $date->format('d');
-            $sundays = $monthHelper->getSundays();
-            $holidays = $monthHelper->getHolidays();
 
-            if (in_array($dateDay, $holidays, strict: true)) {
+            if (DayHelper::isAWorkedHoliday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->holidayDays++;
                 $this->holidayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
-            } elseif (in_array($dateDay, $sundays, strict: true)) {
+            } elseif (DayHelper::isAWorkedSunday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->sundayDays++;
                 $this->sundayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
             } else {

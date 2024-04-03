@@ -6,6 +6,8 @@ namespace App;
 
 class MonthSummary
 {
+    public const MAX_WORKDAY_HOURS = 8;
+
     public function __construct(
         int $month = 05,
         int $year = 2024,
@@ -40,7 +42,7 @@ class MonthSummary
     {
         foreach ($input as $workedDay) {
             $this->regularDays++;
-            $this->regularHours += $workedDay['duration'];
+            $this->regularHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
 
             $this->awayDays--;
         }

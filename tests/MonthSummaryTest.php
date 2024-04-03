@@ -284,7 +284,7 @@ class MonthSummaryTest extends TestCase
             ],
             'output' => [
                 'regularDays' => 1,
-                'regularHours' => 8, //TODO : Replace with CONST when available
+                'regularHours' => MonthSummary::MAX_WORKDAY_HOURS,
                 'sundayDays' => 0,
                 'sundayHours' => 0,
                 'holidayDays' => 0,

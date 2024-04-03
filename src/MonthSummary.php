@@ -41,9 +41,19 @@ class MonthSummary
         $this->awayDays = $monthHelper->getNumberOfDays();
 
         foreach ($input as $workedDay) {
-            $this->regularDays++;
-            $this->regularHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
-
+            $date = date_create_from_format('d/m', $workedDay['date']);
+            if (!$date) {
+                throw new \InvalidArgumentException('Input date does not respect expected d/m format');
+            }
+            $dateDay = $date->format('d');
+            $sundays = $monthHelper->getSundays();
+            if (in_array($dateDay, $sundays, strict: true)) {
+                $this->sundayDays++;
+                $this->sundayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+            } else {
+                $this->regularDays++;
+                $this->regularHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+            }
             $this->awayDays--;
         }
         return [

@@ -18,11 +18,22 @@ class MonthHelper
     }
 
     /**
-     * @return array{}
+     * @return string[] 1-indexed days of month that are a sunday (e.g. 3, 10, 17, 24)
      */
     public function getSundays(): array
     {
-        return [];
+        $sundays = [];
+        $period = new \DatePeriod(
+            new \DateTime("first sunday of $this->year-$this->month"),
+            \DateInterval::createFromDateString('next sunday'),
+            new \DateTime("last day of $this->year-$this->month"),
+            \DatePeriod::INCLUDE_END_DATE
+        );
+
+        foreach ($period as $sundayOccurence) {
+            $sundays[] = $sundayOccurence->format('d');
+        }
+        return $sundays;
     }
 
     /**

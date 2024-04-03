@@ -42,16 +42,18 @@ class MonthSummary
 
         foreach ($input as $workedDay) {
             $date = date_create_from_format('d/m', $workedDay['date']);
-            if (!$date) {
-                throw new \InvalidArgumentException('Input date does not respect expected d/m format');
-            }
-            $dateDay = $date->format('d');
-
             $cappedDuration = min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
-            if ($cappedDuration <= 0) {
+
+            if (
+                $cappedDuration <= 0
+                || !$date
+                || (int) $date->format('m') !== $month
+                || $date->format('d') > $monthHelper->getNumberOfDays()
+            ) {
                 continue;
             }
 
+            $dateDay = $date->format('d');
             if (DayHelper::isAWorkedHoliday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->holidayDays++;
                 $this->holidayHours += $cappedDuration;

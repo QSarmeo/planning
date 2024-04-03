@@ -47,15 +47,17 @@ class MonthSummary
             }
             $dateDay = $date->format('d');
 
+            $cappedDuration = min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+
             if (DayHelper::isAWorkedHoliday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->holidayDays++;
-                $this->holidayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+                $this->holidayHours += $cappedDuration;
             } elseif (DayHelper::isAWorkedSunday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->sundayDays++;
-                $this->sundayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+                $this->sundayHours += $cappedDuration;
             } else {
                 $this->regularDays++;
-                $this->regularHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+                $this->regularHours += $cappedDuration;
             }
             $this->awayDays--;
         }

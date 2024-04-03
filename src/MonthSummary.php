@@ -38,6 +38,12 @@ class MonthSummary
      */
     public function buildFromArray(array $input): array
     {
+        foreach ($input as $workedDay) {
+            $this->regularDays++;
+            $this->regularHours += $workedDay['duration'];
+
+            $this->awayDays--;
+        }
         return [
             'regularDays' => $this->regularDays,
             'regularHours' => $this->regularHours,

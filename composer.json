@@ -4,7 +4,8 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require": {
-        "php": ">=8.3"
+        "php": ">=8.3",
+        "ext-calendar": "*"
     },
     "config": {
         "optimize-autoloader": true,

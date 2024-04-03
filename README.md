@@ -2,12 +2,17 @@
 
 ## Utilisation 
 ### Lancer l'application (Quelques minutes au premier lancement)
-> docker compose up -d
+**(Prérequis : Docker Dekstop)**
 
-### Accéder à l'application
+> docker compose up -d
+> 
+> docker compose run --rm php composer install
+
+### Puis accéder à l'application
 > http://localhost
 
-Contenu : Un cas d'exemple est configuré
+Contenu affiché : Un cas d'exemple est configuré
+
 Pour le modifier, éditer le fichier **public/index.php** en choisissant les variables suivantes :
 > $month : Contient le mois souhaité (Format entier de 1 à 12)
 > 
@@ -18,6 +23,15 @@ Pour le modifier, éditer le fichier **public/index.php** en choisissant les var
 >> *Note*: Ne nécessite pas la présence de tout les jours du mois
 > 
 >> Pour chaque jour, renseigner **'date'** au format (JJ/MM) et **'duration'** au format entier positif
+
+### Solution alternative pour utilisation en Sandbox en ligne
+- Copier le contenu du fichier **public/online_sandbox_compatible_file.php** qui regroupe tout le code produit en un seul fichier
+
+
+- Le coller dans n'importe quelle Sandbox en ligne **en utilisant PHP 8.3**
+
+
+- Mettre à jour les variables **$month, $year, $input** en début de fichier pour manipuler
 
 ---
 ## Travail réalisé

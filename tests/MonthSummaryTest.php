@@ -39,6 +39,37 @@ class MonthSummaryTest extends TestCase
         $this->assertEquals($output, $monthSummary->buildFromArray($month, $year, $input), $rule);
     }
 
+    // This case is interesting because it has an actual sunday/holiday combo
+    public function testBuildFromArrayWithAutoloadedJulyHolidays(): void
+    {
+        $month = 07;
+        $year = 2024;
+
+        $input = [
+            [
+                'date' => '14/07', // Sunday and holiday
+                'duration' => 6
+            ]
+        ];
+
+        $expectedOutput = [
+            'regularDays' => 0,
+            'regularHours' => 0,
+            'sundayDays' => 0,
+            'sundayHours' => 0,
+            'holidayDays' => 1,
+            'holidayHours' => 6,
+            'awayDays' => 31 - 1,
+        ];
+
+        $monthSummary = new MonthSummary();
+        $this->assertEquals(
+            $expectedOutput,
+            $monthSummary->buildFromArray($month, $year, $input),
+            'Un dimanche férié est prioritairement férié avant d\'être un dimanche'
+        );
+    }
+
     public static function basicExamples(): \Generator
     {
         yield 'Empty input' => [
@@ -216,25 +247,6 @@ class MonthSummaryTest extends TestCase
                 'awayDays' => 31 - 1,
             ],
             'rule' => 'Une journée de 2h travaillée sur un dimanche doit être considéré comme un jour standard'
-        ];
-
-        yield 'Input with a sunday which is a holiday' => [
-            'input' => [
-                [
-                    'date' => '26/05', // Sunday and holiday
-                    'duration' => 6
-                ]
-            ],
-            'output' => [
-                'regularDays' => 0,
-                'regularHours' => 0,
-                'sundayDays' => 0,
-                'sundayHours' => 0,
-                'holidayDays' => 1,
-                'holidayHours' => 6,
-                'awayDays' => 31 - 1,
-            ],
-            'rule' => 'Un dimanche férié est prioritairement férié avant d\'être un dimanche'
         ];
 
         yield 'Input with a sunday which is a holiday but with too few hours' => [

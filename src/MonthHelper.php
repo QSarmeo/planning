@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace App;
 
+use Umulmrum\Holiday\Filter\IncludeTimespanFilter;
+use Umulmrum\Holiday\Formatter\DateFormatter;
+use Umulmrum\Holiday\HolidayCalculator;
+use Umulmrum\Holiday\Provider\France\France;
+
 class MonthHelper
 {
     public function __construct(
@@ -37,17 +42,20 @@ class MonthHelper
     }
 
     /**
-     * Only supports MAY 2024
-     * Warning : 26/05/2024 is set as a holiday to have a sunday/holiday combo
-     *      (And it's Mother's Day, so it should be a holiday !)
-     *
      * @return string[] 1-indexed days of month that are a holiday (e.g. 3, 10, 17, 24)
      */
     public function getHolidays(): array
     {
-        return match(true) {
-            ($this->month === 5 && $this->year === 2024) => ['01', '08', '09', '20', '26'],
-            default => [],
-        };
+        $firstDay = new \DateTime("first day of $this->year-$this->month");
+        $lastDay = new \DateTime("last day of $this->year-$this->month");
+
+        $holidays = (new HolidayCalculator())
+            ->calculate(France::class, $this->year)
+            ->filter(new IncludeTimespanFilter($firstDay, $lastDay));
+
+        /** @var string[] $formattedHolidayList */
+        $formattedHolidayList = (new DateFormatter('d'))->formatList($holidays);
+
+        return $formattedHolidayList;
     }
 }

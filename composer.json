@@ -5,7 +5,8 @@
     "prefer-stable": true,
     "require": {
         "php": ">=8.3",
-        "ext-calendar": "*"
+        "ext-calendar": "*",
+        "umulmrum/holiday": "^0.6.0"
     },
     "config": {
         "optimize-autoloader": true,

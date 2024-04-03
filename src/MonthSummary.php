@@ -7,6 +7,8 @@ namespace App;
 class MonthSummary
 {
     public function __construct(
+        int $month = 05,
+        int $year = 2024,
         public int $regularDays = 0,
         public int $regularHours = 0,
         public int $sundayDays = 0,
@@ -15,6 +17,7 @@ class MonthSummary
         public int $holidayHours = 0,
         public int $awayDays = 0,
     ) {
+        $this->awayDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     }
 
     /**

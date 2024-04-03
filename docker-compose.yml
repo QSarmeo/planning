@@ -1,0 +1,29 @@
+version: "3.7"
+
+networks:
+    server:
+
+services:
+    apache:
+        build:
+            context: ./docker/Apache
+        container_name: apache
+        ports:
+            - "80:80"
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - server
+    php:
+        build:
+            context: ./docker/PHP
+        container_name: php
+        ports:
+            - "9000:9000"
+        volumes:
+            - ./:/var/www/html
+        networks:
+            - server
+volumes:
+    data:
+        external: true

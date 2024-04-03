@@ -47,7 +47,12 @@ class MonthSummary
             }
             $dateDay = $date->format('d');
             $sundays = $monthHelper->getSundays();
-            if (in_array($dateDay, $sundays, strict: true)) {
+            $holidays = $monthHelper->getHolidays();
+
+            if (in_array($dateDay, $holidays, strict: true)) {
+                $this->holidayDays++;
+                $this->holidayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+            } elseif (in_array($dateDay, $sundays, strict: true)) {
                 $this->sundayDays++;
                 $this->sundayHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
             } else {

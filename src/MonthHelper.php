@@ -37,10 +37,17 @@ class MonthHelper
     }
 
     /**
-     * @return array{}
+     * Only supports MAY 2024
+     * Warning : 26/05/2024 is set as a holiday to have a sunday/holiday combo
+     *      (And it's Mother's Day, so it should be a holiday !)
+     *
+     * @return string[] 1-indexed days of month that are a holiday (e.g. 3, 10, 17, 24)
      */
     public function getHolidays(): array
     {
-        return [];
+        return match(true) {
+            ($this->month === 5 && $this->year === 2024) => ['01', '08', '09', '20', '26'],
+            default => [],
+        };
     }
 }

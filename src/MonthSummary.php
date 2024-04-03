@@ -9,8 +9,6 @@ class MonthSummary
     public const MAX_WORKDAY_HOURS = 8;
 
     public function __construct(
-        int $month = 05,
-        int $year = 2024,
         public int $regularDays = 0,
         public int $regularHours = 0,
         public int $sundayDays = 0,
@@ -19,7 +17,6 @@ class MonthSummary
         public int $holidayHours = 0,
         public int $awayDays = 0,
     ) {
-        $this->awayDays = cal_days_in_month(CAL_GREGORIAN, $month, $year);
     }
 
     /**
@@ -38,8 +35,11 @@ class MonthSummary
      *     awayDays: int,
      * }
      */
-    public function buildFromArray(array $input): array
+    public function buildFromArray(int $month, int $year, array $input): array
     {
+        $monthHelper = new MonthHelper($month, $year);
+        $this->awayDays = $monthHelper->getNumberOfDays();
+
         foreach ($input as $workedDay) {
             $this->regularDays++;
             $this->regularHours += min($workedDay['duration'], self::MAX_WORKDAY_HOURS);

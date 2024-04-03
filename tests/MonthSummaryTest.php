@@ -32,8 +32,11 @@ class MonthSummaryTest extends TestCase
     #[DataProvider('edgeCasesExamples')]
     public function testBuildFromArray(array $input, array $output, string $rule): void
     {
+        $month = 05;
+        $year = 2024;
+
         $monthSummary = new MonthSummary();
-        $this->assertEquals($output, $monthSummary->buildFromArray($input), $rule);
+        $this->assertEquals($output, $monthSummary->buildFromArray($month, $year, $input), $rule);
     }
 
     public static function basicExamples(): \Generator

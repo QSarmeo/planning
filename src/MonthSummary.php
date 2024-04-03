@@ -48,6 +48,9 @@ class MonthSummary
             $dateDay = $date->format('d');
 
             $cappedDuration = min($workedDay['duration'], self::MAX_WORKDAY_HOURS);
+            if ($cappedDuration <= 0) {
+                continue;
+            }
 
             if (DayHelper::isAWorkedHoliday($monthHelper, $dateDay, $workedDay['duration'])) {
                 $this->holidayDays++;
